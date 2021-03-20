@@ -5,12 +5,12 @@
 3. [Guia de instalacion](#guia-de-instalacion)
 4. [Conclusion](#conclusion)
 
-### Información General
+### Informacion General
 ***
 API para pedidos de comida deliciosa. Como cliente, podrás registrarte ver el listado de productos y realizar una orden.
 Los adminstradores tienen la posibilidad de consultar usuarios, productos y pedidos; crear, actualizar y eliminar productos y pedidos.
 
-### Requisitos para instalación
+### Requisitos para instalacion
 ***
 * Tener descargado e intalado git. En caso de no tener instalado el programa, puede seguir el siguiente paso a paso:\
 https://git-scm.com/book/es/v2/Inicio---Sobre-el-Control-de-Versiones-Instalaci%C3%B3n-de-Git
@@ -19,7 +19,7 @@ https://blog.nubecolectiva.com/que-es-y-como-instalar-node-js/
 * Crear una cuenta en https://remotemysql.com/ y crear una base de datos. En caso de no tener una cuenta, puede seguir el siguiente paso a paso:\
 https://remotemysql.com/tutor1.html
 
-### Guia de instalación
+### Guia de instalacion
 ***
 1. Crear una carpeta en tu directorio local.
 2. Desde la terminal o un cmd ubicarse en el directorio creado.
@@ -46,6 +46,6 @@ $ Aplicación Inicializando...
 14. En un navegador (Chrome, Edge, Explorer, etc) ingresar la siguiente URL:\
 http://localhost:3000/api-docs
 
-### Conclusión
+### Conclusion
 ***
 > Una vez finalizado los pasos anterior se tendrá funcionando la aplicación y se mostrará la documentación de cada API para su consumo.
