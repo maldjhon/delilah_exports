@@ -24,7 +24,7 @@ https://remotemysql.com/tutor1.html
 1. Crear una carpeta en tu directorio local.
 2. Desde la terminal o un cmd ubicarse en el directorio creado.
 3. Ejecutar el siguiente comando:\
-$ git clone 
+$ git clone https://github.com/maldjhon/delilah_exports.git
 4. Luego de finalizar ejecutar el siguiente comando:\
 $ npm install
 5. Validar que se haya generado el directorio node_modules
