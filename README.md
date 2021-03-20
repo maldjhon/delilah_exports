@@ -1,9 +1,9 @@
 # Delilah Exports
 ## Tabla de contenido
-1. [Información General](#Informacion-general)
-2. [Requisitos para instalación](#Requisitos-instalacion)
-3. [Guia de instalación](#Guia-instalacion)
-4. [Conclusión](#Conclusion)
+1. [Informacion General](#información-general)
+2. [Requisitos para instalacion](#requisitos-para-instalacion)
+3. [Guia de instalacion](#guia-de-instalacion)
+4. [Conclusion](#conclusion)
 
 ### Información General
 ***
