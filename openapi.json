@@ -1,0 +1,1064 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Delilah Resto",
+    "description": "API for delicious food orders. As a customer, you will be able to register, view the list of our products and place an order. Restaurant administrators have the ability to receive orders and update them."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Get all users.",
+        "summary": "Get all users.",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully logged in.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "user": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "integer"
+                      },
+                      "direction": {
+                        "type": "string"
+                      },
+                      "postn": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "description": "Allows to create the client or the application administrator.",
+        "summary": "Allows to create the client or the application administrator.",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user",
+                  "name",
+                  "password",
+                  "profile"
+                ],
+                "properties": {
+                  "user": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "integer"
+                  },
+                  "direction": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "profile": {
+                    "type": "string",
+                    "enum": [
+                      "administrador",
+                      "cliente"
+                    ]
+                  }
+                }
+              },
+              "example": {
+                "user": "admin",
+                "name": "Administador",
+                "email": "admin@outlook.com",
+                "phone": 56154848815,
+                "direction": "Calle falsa 123",
+                "password": "admin123",
+                "profile": "administrador"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful creation of the client or administrator.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "description": "Login to the authorized user.",
+        "summary": "Login to the authorized user.",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user",
+                  "password"
+                ],
+                "properties": {
+                  "user": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              },
+              "example": {
+                "user": "pepito1",
+                "password": "pepito1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully logged in.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/users/update/{id}": {
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Successful update of user.",
+        "summary": "Successful update of user.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user",
+                  "direction"
+                ],
+                "properties": {
+                  "user": {
+                    "type": "string"
+                  },
+                  "direction": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "integer"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              },
+              "example": {
+                "user": "pepito1",
+                "direction": "Av siempreviva 1",
+                "name": "Pepito Alfonso",
+                "phone": 5595133558,
+                "email": "pepito1@gmail.com",
+                "password": "pepito1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully update.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Get all products.",
+        "summary": "Get all products.",
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "price": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "integer"
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/products/create": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Successful creation of product.",
+        "summary": "Successful creation of product.",
+        "tags": [
+          "Products"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "price",
+                  "user"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "user": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "Sandwich Veggie",
+                "price": 350,
+                "description": "Sandwich Veggie 100% vegetariano",
+                "user": "admin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful creation of product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/products/update/{id}": {
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Successful update of product.",
+        "summary": "Successful update of product.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "user": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "Hamburguesa Clásica",
+                "price": 310,
+                "description": "Hamburguesa, tomate, lechuga",
+                "user": "admin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful update product."
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/products/delete/{id}": {
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Successful delete of product.",
+        "summary": "Successful delete of product.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful delete product."
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Get all orders.",
+        "summary": "Get all orders.",
+        "tags": [
+          "Orders"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all orders.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "orderNum": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "payment": {
+                        "type": "string"
+                      },
+                      "total": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "direction": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "products": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/orders/create": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Successful creation of order.",
+        "summary": "Successful creation of order.",
+        "tags": [
+          "Orders"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "payment",
+                  "total",
+                  "user"
+                ],
+                "properties": {
+                  "payment": {
+                    "type": "string"
+                  },
+                  "total": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "user": {
+                    "type": "string"
+                  },
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "payment": "Tarjeta crédito",
+                "total": 650,
+                "description": "1x Sandwich Veggie + 1x Hamburguesa Clásica",
+                "user": "pepito1",
+                "products": [
+                  {
+                    "id": 1,
+                    "name": "Sandwich Veggie"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Hamburguesa Clásica"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful creation of order.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "orderNum": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/orders/update/{id}": {
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Successful update of order.",
+        "summary": "Successful update of order.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "payment": {
+                    "type": "string"
+                  },
+                  "total": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "action"
+                      ],
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "enum": [
+                            "Agregar",
+                            "Eliminar"
+                          ]
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "payment": "Efectivo",
+                "total": 650,
+                "description": "1x Sandwich Veggie + 1x Hamburguesa Clásica",
+                "user": "pepito1",
+                "products": [
+                  {
+                    "action": "Agregar",
+                    "id": 1,
+                    "name": "Sandwich Veggie"
+                  },
+                  {
+                    "action": "Eliminar",
+                    "id": 2,
+                    "name": "Hamburguesa Clásica"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful update order."
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    },
+    "/orders/delete/{id}": {
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Successful delete of order.",
+        "summary": "Successful delete of order.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful delete order."
+          },
+          "400": {
+            "$ref": "#/components/responses/400Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/401Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/500Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "400Error": {
+        "description": "Invalid request sent.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401Error": {
+        "description": "Unauthorized request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404Error": {
+        "description": "Request not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500Error": {
+        "description": "Internal server problem.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
